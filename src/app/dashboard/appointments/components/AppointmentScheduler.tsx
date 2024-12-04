@@ -1,80 +1,10 @@
 'use client';
 
 import React from 'react';
+import {appointments} from './data'
+import {doctors} from './data'
 
-interface Doctor {
-  name: string;
-  email: string;
-  bgColor: string;
-}
-
-interface Appointment {
-  doctorIndex: number;
-  patientName: string;
-  type: string;
-  startTime: string;
-  endTime: string;
-  status: 'Finished' | 'Ongoing' | 'Registered';
-}
-
-const doctors: Doctor[] = [
-  { name: 'Dr. Sarthak Tike', email: 'sarthak.t@example.com', bgColor: 'bg-yellow-100' },
-  { name: 'Dr. Varun Desai', email: 'varun.d@example.com', bgColor: 'bg-blue-100' },
-  { name: 'Dr. Ankita Jain', email: 'ankita.j@example.com', bgColor: 'bg-purple-100' },
-];
-
-const appointments: Appointment[] = [
-  {
-    doctorIndex: 0,
-    patientName: 'Gaurav Sharma',
-    type: 'Bridges',
-    startTime: '9:00 AM',
-    endTime: '10:00 AM',
-    status: 'Finished',
-  },
-  {
-    doctorIndex: 0,
-    patientName: 'Soham Jain',
-    type: 'Bleaching',
-    startTime: '12:00 AM',
-    endTime: '1:00 PM',
-    status: 'Registered',
-  },
-  {
-    doctorIndex: 1,
-    patientName: 'Riya Kumar',
-    type: 'Scaling',
-    startTime: '10:00 AM',
-    endTime: '11:00 AM',
-    status: 'Ongoing',
-  },
-  {
-    doctorIndex: 1,
-    patientName: 'Soham Jain',
-    type: 'Bleaching',
-    startTime: '1:00 PM',
-    endTime: '2:00 PM',
-    status: 'Registered',
-  },
-  {
-    doctorIndex: 2,
-    patientName: 'Soham Jain',
-    type: 'Bleaching',
-    startTime: '9:00 AM',
-    endTime: '10:00 AM',
-    status: 'Finished',
-  },
-  {
-    doctorIndex: 2,
-    patientName: 'Soham Jain',
-    type: 'Bleaching',
-    startTime: '10:00 AM',
-    endTime: '11:00 AM',
-    status: 'Ongoing',
-  },
-];
-
-const timeSlots = Array.from({ length: 9 }, (_, i) => i + 9); // 9 AM to 5 PM
+const timeSlots = Array.from({ length: 10 }, (_, i) => i + 9); // 9 AM to 5 PM
 
 const parseTime = (time: string) => {
   const [hour, minute] = time.split(':').map((val) => parseInt(val, 10));
