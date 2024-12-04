@@ -42,7 +42,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
       {/* Patient Info */}
       <div className="flex items-center">
         <img
-          src="/profile-placeholder.png" // Replace with your actual image path
+          src="/profile-placeholder.png" 
           alt="Profile"
           className="w-12 h-12 rounded-full object-cover mr-4 flex-shrink-0"
         />

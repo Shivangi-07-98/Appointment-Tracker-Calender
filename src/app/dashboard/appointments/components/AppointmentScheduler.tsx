@@ -4,7 +4,7 @@ import React from 'react';
 import {appointments} from './data'
 import {doctors} from './data'
 
-const timeSlots = Array.from({ length: 10 }, (_, i) => i + 9); // 9 AM to 5 PM
+const timeSlots = Array.from({ length: 10 }, (_, i) => i + 9); // 9 AM to 6 PM
 
 const parseTime = (time: string) => {
   const [hour, minute] = time.split(':').map((val) => parseInt(val, 10));
@@ -15,7 +15,7 @@ const parseTime = (time: string) => {
 const calculatePosition = (startTime: string, endTime: string, doctorIndex: number) => {
   const startHour = parseTime(startTime);
   const endHour = parseTime(endTime);
-  const slotHeight = 5; // Adjust as per UI design (5rem per hour).
+  const slotHeight = 5; // (5rem per hour)
 
   return {
     top: `${(startHour - 9) * slotHeight}rem`,
@@ -49,7 +49,7 @@ const AppointmentScheduler: React.FC = () => {
           {timeSlots.map((time, index) => (
             <div
               key={index}
-              className="h-20 flex items-start justify-center pt-1 relative" // Adjusted alignment for time
+              className="h-20 flex items-start justify-center pt-1 relative" 
             >
               {/* Display time at the top without horizontal line */}
               <span className="absolute -top-3 text-center font-semibold">
@@ -118,7 +118,7 @@ const AppointmentScheduler: React.FC = () => {
                   <div className="flex justify-between items-center m-2">
                   <div className="flex items-center ">
                     <img
-                      src="/image.png" // Replace with an actual path or dynamic image
+                      src="/image.png" 
                       alt="Profile"
                       className="w-10 h-10 rounded-full object-cover mr-3"
                     />

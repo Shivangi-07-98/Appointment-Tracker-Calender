@@ -87,3 +87,4 @@ export const appointments = [
     status: 'Registered',
   },
 ];
+
