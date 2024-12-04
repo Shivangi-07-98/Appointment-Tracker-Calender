@@ -5,6 +5,8 @@ import {appointments} from './data'
 import {doctors} from './data'
 
 const timeSlots = Array.from({ length: 10 }, (_, i) => i + 9); // 9 AM to 6 PM
+// [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+
 
 const parseTime = (time: string) => {
   const [hour, minute] = time.split(':').map((val) => parseInt(val, 10));

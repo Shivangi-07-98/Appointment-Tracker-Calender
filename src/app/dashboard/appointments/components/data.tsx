@@ -11,7 +11,7 @@ export const appointments = [
     patientName: 'Gaurav Sharma',
     type: 'Bridges',
     startTime: '9:00 AM',
-    endTime: '10:00 AM',
+    endTime: '11:00 AM',
     status: 'Finished',
   },
   {
