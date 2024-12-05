@@ -18,7 +18,7 @@ export const appointments = [
     doctorIndex: 0,
     patientName: 'Soham Jain',
     type: 'Bleaching',
-    startTime: '12:00 AM',
+    startTime: '12:00 PM',
     endTime: '1:00 PM',
     status: 'Ongoing',
   },
