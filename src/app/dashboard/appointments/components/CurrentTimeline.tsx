@@ -24,7 +24,7 @@ const CurrentTimeLine: React.FC = () => {
     <div
       className="absolute w-full z-50 flex items-center pointer-events-none"
       style={{
-        top: 'calc(3.5 * 77px)', // Adjust this based on your row height
+        top: 'calc(3.5 * 57px)', // Adjust this based on your row height
       }}
     >
       {/* Red Line */}
