@@ -1,29 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { appointments } from './data';
+import React, { useState, useEffect, useRef } from 'react';
 import { doctors } from './data';
+import Appointments from './Appointments'
+import CurrentTimeLine from './CurrentTimeline'
+import HeaderDoctor from './HeaderDoctors'
+import TopRight from './TopRight'
+import TopLeft from './TopLeft'
 
 const timeSlots = Array.from({ length: 10 }, (_, i) => i + 9); // 9 AM to 6 PM
-
-const parseTime = (time: string) => {
-  const [hour, minute] = time.split(':').map((val) => parseInt(val, 10));
-  const isPM = time.includes('PM');
-  return isPM && hour !== 12 ? hour + 12 : !isPM && hour === 12 ? 0 : hour;
-};
-
-const calculatePosition = (startTime: string, endTime: string, doctorIndex: number, totalDoctors: number) => {
-  const startHour = parseTime(startTime);
-  const endHour = parseTime(endTime);
-  const slotHeight = 5; // 5rem per hour
-
-  return {
-    top: `${(startHour - 9) * slotHeight}rem`,
-    height: `${(endHour - startHour) * slotHeight}rem`,
-    left: `${doctorIndex * (100 / totalDoctors)}%`,
-    width: `${100 / totalDoctors}%`,
-  };
-};
 
 const calculateCurrentTimePosition = (currentTime: Date): string => {
   const hours = currentTime.getHours();
@@ -32,187 +17,87 @@ const calculateCurrentTimePosition = (currentTime: Date): string => {
   return `${(hours - 9) * slotHeight + (minutes / 60) * slotHeight}rem`;
 };
 
-const useCurrentTime = (): Date => {
-  const [currentTime, setCurrentTime] = useState<Date>(new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // Update every minute
-    return () => clearInterval(interval);
-  }, []);
-
-  return currentTime;
-};
-
-
-const CurrentTimeLine: React.FC = () => {
-  const currentTime = useCurrentTime();
-  const timeString = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  return (
-    <div
-      className="absolute w-full z-50 flex items-center pointer-events-none"
-      style={{
-        top: 'calc(3.5 * 77px)', // Adjust this based on your row height
-      }}
-    >
-      {/* Red Line */}
-      <div className="relative w-full flex items-center">
-        {/* Time Text */}
-        <span
-          className="absolute bg-red-500 text-white text-sm px-2.5 py-0.5 rounded-full"
-          style={{
-            zIndex: 100,
-            left: '-3%',
-            transform: 'translateX(-50%)',
-            top: '-0.7rem', // Adjust the vertical position of the text if necessary
-          }}
-        >
-          {timeString}
-        </span>
-        {/* Red Line */}
-        <div
-          className="absolute border-b-2 border-red-500 h-0.7 w-full z-10"
-          style={{
-            width: '100%', // Make sure the line spans the full container width
-            zIndex: 10,
-          }}
-        ></div>
-      </div>
-    </div>
-  );
-};
-
-
-
-
 
 const AppointmentScheduler: React.FC = () => {
   return (
-    <div className="flex flex-col bg-gray-50 min-h-screen rounded-lg overflow-hidden shadow-lg">
-      {/* Header: Doctors */}
-      <div className="flex bg-white shadow-md">
-        <div className="w-24 bg-green-100"></div> {/* Time column background */}
-        {doctors.map((doctor, index) => (
-          <div
-            key={index}
-            className={`flex-1 p-4 text-center border-r ${doctor.bgColor}`}
-          >
-            <h2 className="text-lg font-extrabold">{doctor.name}</h2>
-            <p className="text-sm text-gray-500">{doctor.email}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Scheduler Grid */}
-      <div className="relative flex">
-        {/* Time Column */}
-        <div className="w-24 bg-green-100 text-gray-700 font-medium">
-          {timeSlots.map((time, index) => (
-            <div
-              key={index}
-              className="h-20 flex items-start justify-center pt-1 relative"
-            >
-              <span className="absolute -top-3 text-center font-semibold">
-                {`${time % 12 || 12}:00 ${time >= 12 ? 'PM' : 'AM'}`}
-              </span>
-            </div>
-          ))}
+    <>
+      <div className="flex">
+        <div>
+          <TopLeft />
         </div>
+        <div>
+          <TopRight />
+        </div>
+      </div>
+      <div className="flex flex-col rounded-lg shadow-lg">
+        <HeaderDoctor />
 
-        {/* Appointment Grid */}
-        <div className="flex-1 relative">
-          {/* Background Columns */}
-          <div className="absolute w-full h-full flex">
-            {doctors.map((_, index) => (
+
+        {/* Scheduler Grid */}
+        <div className="relative flex" style={{ paddingTop: '9.6rem' }}>
+          {/* Time Column */}
+          <div className="w-24 bg-teal-100 text-gray-700 font-medium">
+            {timeSlots.map((time, index) => (
               <div
                 key={index}
-                className={`flex-1 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
-              ></div>
+                className="h-20 flex items-start justify-center pt-1 relative"
+              >
+                <span className="absolute -top-2 text-center font-semibold">
+                  {`${time % 12 || 12}:00 ${time >= 12 ? 'PM' : 'AM'}`}
+                </span>
+              </div>
             ))}
           </div>
 
-          {/* Time Slots Grid */}
-          <div className="absolute w-full h-full">
+          {/* Appointment Grid */}
+          <div className="flex-1 relative">
+
+
+
+            {/* Background Columns */}
+            <div className="absolute w-full h-full flex">
+              {doctors.map((_, index) => (
+                <div
+                  key={index}
+                  // className={`flex-1 ${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}
+                  // className="flex-1 border-r-2 border-gray-300"
+                  className="min-w-[calc(85vw/3)] p-4 text-center border-r-2 border-l-2"
+                ></div>
+              ))}
+            </div>
+
+
+
+            {/* Background Rows  */}
+            {/* <div className="absolute w-full h-full">
             {timeSlots.map((_, index) => (
               <div key={index} className="flex w-full h-20 border-b-2 border-gray-300"></div>
             ))}
+          </div> */}
+
+            {/* Background Rows */}
+            <div
+              className="absolute"
+              style={{
+                width: `calc(${doctors.length} * min(33.33%, calc(85vw / 3)))`,
+                height: "100%",
+              }}
+            >
+              {timeSlots.map((_, index) => (
+                <div key={index} className="flex h-20 border-b-2 border-gray-300"></div>
+              ))}
+            </div>
+
+
+            <CurrentTimeLine />
+
+            <Appointments />
+
+
           </div>
-
-          <CurrentTimeLine />
-
-          {/* Render Appointments */}
-          {appointments.map((appointment, index) => {
-            const position = calculatePosition(
-              appointment.startTime,
-              appointment.endTime,
-              appointment.doctorIndex,
-              doctors.length
-            );
-
-            return (
-              <div
-                key={index}
-                className="absolute"
-                style={{
-                  top: position.top,
-                  left: position.left,
-                  height: position.height,
-                  width: position.width,
-                }}
-              >
-                <div className="bg-teal-50 rounded-lg shadow-lg border relative h-full">
-                  <div
-                    className={`absolute top-0 left-0 right-0 h-1 rounded-t-lg ${
-                      appointment.status === 'Finished'
-                        ? 'bg-green-500'
-                        : appointment.status === 'Ongoing'
-                        ? 'bg-orange-500'
-                        : 'bg-blue-500'
-                    }`}
-                  ></div>
-                  <div className="flex justify-between items-center m-2">
-                    <div className="flex items-center">
-                      <img
-                        src="/image.png"
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full object-cover mr-3"
-                      />
-                      <div>
-                        <p className="font-bold text-gray-800 text-sm truncate">
-                          {appointment.patientName}
-                        </p>
-                        <p className="text-xs text-gray-500">{appointment.type}</p>
-                        <p className="mt-4 text-xs text-gray-600">
-                          {appointment.startTime} - {appointment.endTime}
-                        </p>
-                      </div>
-                    </div>
-                    <div>
-                      <p
-                        className={`mt-1 text-xs font-medium ${
-                          appointment.status === 'Finished'
-                            ? 'text-green-600'
-                            : appointment.status === 'Ongoing'
-                            ? 'text-orange-500'
-                            : 'text-blue-500'
-                        }`}
-                      >
-                        {appointment.status}
-                      </p>
-                      <button className="mt-2 px-3 py-1 bg-blue-500 text-white text-xs rounded">
-                        See Patient Details
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
